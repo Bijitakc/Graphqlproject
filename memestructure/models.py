@@ -1,11 +1,12 @@
-from importlib.resources import contents
 from django.db import models
+from django.core.validators import FileExtensionValidator
 
 # Create your models here.
 
 class Meme(models.Model):
     title = models.CharField(max_length=255)
-    # photo = models.FileField()
+    author = models.ForeignKey(to="user.ExtendUser", on_delete=models.CASCADE, related_name="Author")
+    photo = models.FileField(upload_to='images/memephotos',null=True, validators=[FileExtensionValidator(['svg', 'jpg', 'png', 'jpeg'])])
 
     class Meta:
         verbose_name = "Meme"
@@ -15,6 +16,7 @@ class Meme(models.Model):
 class Comment(models.Model):
     content = models.TextField(blank=True, null=True)
     meme = models.ForeignKey(to="Meme", on_delete=models.CASCADE)
+    author = models.ForeignKey(to="user.ExtendUser", on_delete=models.CASCADE, related_name="CommentAuthor")
 
     class Meta:
         verbose_name = "Comment"
@@ -25,9 +27,9 @@ class Comment(models.Model):
 
 
 class Reply(models.Model):
-    lol = models.TextField()
-    # comment = models.ForeignKey(to="Comment", on_delete=models.CASCADE, related_name="replycontent")
-    # parent_comment = models.ForeignKey(to="Comment", on_delete=models.CASCADE, related_name="Parentcomment")
+    content = models.TextField(blank=True, null=True)
+    author = models.ForeignKey(to="user.ExtendUser", on_delete=models.CASCADE, related_name="ReplyAuthor")
+    parent_comment = models.ForeignKey(to="Comment", on_delete=models.CASCADE, related_name="ReplyParent")
 
     class Meta:
         verbose_name = "Reply"
