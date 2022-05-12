@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-4b=&mpv%#5ygs8+c_m+tl%&!nx*fg*=m6c)b$fc7c)!-g5d3u1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -132,7 +132,7 @@ AUTH_USER_MODEL = 'user.ExtendUser'
 
 # graphene settings
 GRAPHENE = {
-    'SCHEMA' : 'user.schema.schema',
+    'SCHEMA': 'user.schema.schema',
     "MIDDLEWARE": [
         "graphql_jwt.middleware.JSONWebTokenMiddleware",
     ],

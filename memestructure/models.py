@@ -1,16 +1,17 @@
 from django.db import models
-from django.core.validators import FileExtensionValidator
 
-# Create your models here.
 
 class Meme(models.Model):
     title = models.CharField(max_length=255)
     author = models.ForeignKey(to="user.ExtendUser", on_delete=models.CASCADE, related_name="Author")
-    photo = models.FileField(upload_to='images/memephotos',null=True, validators=[FileExtensionValidator(['svg', 'jpg', 'png', 'jpeg'])])
+    photo = models.ImageField(upload_to='images/memephotos', null=True)
 
     class Meta:
         verbose_name = "Meme"
         verbose_name_plural = "Memes" 
+    
+    def __str__(self) -> str:
+        return self.title
 
 
 class Comment(models.Model):
@@ -21,7 +22,7 @@ class Comment(models.Model):
     class Meta:
         verbose_name = "Comment"
         verbose_name_plural = "Comments"
-    
+
     def __str__(self) -> str:
         return self.content
 
@@ -34,3 +35,6 @@ class Reply(models.Model):
     class Meta:
         verbose_name = "Reply"
         verbose_name_plural = "Replies"
+
+    def __str__(self) -> str:
+        return self.author
